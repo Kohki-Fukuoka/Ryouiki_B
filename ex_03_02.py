@@ -62,25 +62,30 @@ def key_handler(event):
     if(event.keycode == 37): # left
         car.setPos(car.x - abs(car.vx), car.y)
     elif(event.keycode == 38):  # up
-        car.setPos(car.x, car.y - abs(car.vx))
+        car.setPos(car.x, car.y - abs(car.vy))
     elif(event.keycode == 39): # right
         car.setPos(car.x + abs(car.vx), car.y)
     elif(event.keycode == 40):  # down
-        car.setPos(car.x, car.y + abs(car.vx))
+        car.setPos(car.x, car.y + abs(car.vy))
     
     if(car.outToLeft() | car.outToTop() | car.outToRight() | car.outToBottom()):
         car.setPos(beforeX, beforeY)
+
+def exit_clicked():
+    frame.active = False
 
 frame = tkinter.Tk()
 frame.geometry('600x400')
 frame.title("課題2-1")
 canvas = tkinter.Canvas(frame, bg = "white")
 canvas.pack(fill=tkinter.BOTH, expand=True)
+frame.protocol("WM_DELETE_WINDOW", exit_clicked)
+frame.active = True
 
 car = Car(100, "#FF0000")
 car.setBorder(0, 600, 0, 400)
 car.setPos(250, 150)
-car.setMovement(10, 0)
+car.setMovement(10, 10)
 
 print("open picture")
 car.draw(canvas)
@@ -88,12 +93,12 @@ frame.update()
 
 frame.bind("<KeyPress>", key_handler)
 
-while(canvas != None):
+while(frame.active):
     try:
         canvas.delete("all")
         car.draw(canvas)
         frame.update()
         time.sleep(1/60)
-    except:
-        print("error")
+    except Exception as e:
+        print(str(e))
         break
