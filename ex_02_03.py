@@ -34,8 +34,10 @@ while(True):
     try:
         if(cmd == "quit"):
             break
+        if((int(cmd) < 0) | (int(cmd) >= 100)):
+            raise Exception("this number is out of range")
         canvas.create_rectangle(10+60*(int(cmd)%10), 10+60*int(int(cmd)/10), 10+60*(int(cmd)%10+1), 10+60*int(int(cmd)/10+1), fill="white", outline="white")
         frame.update()
-    except(Exception):
-        print("error")
+    except Exception as e:
+        print(str(e))
 print("picture was closed")
