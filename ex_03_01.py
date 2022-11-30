@@ -45,25 +45,29 @@ class Car:
 
         #canvas.create_text(300, 300, anchor=tkinter.CENTER, fill="black", text="Kohki Fukuoka", font=("",20))
 
+def exit_clicked():
+    frame.active = False
 
 frame = tkinter.Tk()
 frame.geometry('600x400')
 frame.title("課題2-1")
 canvas = tkinter.Canvas(frame, bg = "white")
 canvas.pack(fill=tkinter.BOTH, expand=True)
+frame.protocol("WM_DELETE_WINDOW", exit_clicked)
+frame.active = True
 
 car = Car(100, "#FF0000")
 car.setBorder(0, 600, 0, 400)
 car.setPos(250, 150)
 car.setMovement(10, 0)
 
-while(canvas != None):
+while(frame.active):
     try:
         canvas.delete("all")
         car.move()
         car.draw(canvas)
         frame.update()
         time.sleep(1/60)
-    except:
-        print("error")
+    except Exception as e:
+        print(str(e))
         break
